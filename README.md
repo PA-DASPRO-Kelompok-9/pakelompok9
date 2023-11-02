@@ -10,6 +10,7 @@ NIM : 23009116043
 
 ## Penjelasan
 ### Flow-chart
+![ddp pa (1)](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144618201/bd2fd5ee-49da-43eb-92e9-34324623d766)
 
 
 ## Screenshot Input dan Output
