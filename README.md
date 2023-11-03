@@ -169,6 +169,8 @@ Pilih tindakan (1/2/3/4/5):
 Tentukan opsi anda (1/2/3/4/5/6/7/8):
 ```
 
+# ----------------------------------------------------------
+
 # Penjelasan Function
 
 ## 1. load_data_from_json(file_name):
@@ -186,7 +188,7 @@ untuk membuat akun
 ## 5. login(): 
 untuk login akun
 
-----------------------------------------------------------
+# ----------------------------------------------------------
 
 ## 6. lihat_produk():
 untuk melihat produk pada menu pelanggan maupun admin (read)
@@ -200,7 +202,7 @@ untuk menampilkan hasil pencarian berdasarkan keyword yang kita berikut
 ## 9. cari_dan_tampilkan_produk():
 fungsi tempat kita menginput keyword untuk mencari produk
 
-----------------------------------------------------------
+# ----------------------------------------------------------
 
 ## 10. Tambah Produk():
 untuk membuat produk baru (create)
@@ -220,7 +222,7 @@ untuk menghapus data pengguna (pelanggan), akun admin tidak dapat dihapus
 ## 15. menu_admin:
 untuk memuat menu admin yang berisi fungsi-fungsi diatas
 
-----------------------------------------------------------
+# ----------------------------------------------------------
 
 ## 16. kurangi_saldo(username, jumlah_pembelian):
 untuk mengurangi saldo pembeli saat melakukan pembelian
