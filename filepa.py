@@ -1,6 +1,8 @@
 import json
 import pwinput
 import os
+import random
+from datetime import datetime
 from prettytable import PrettyTable
 
 ##########################################################################################################################################
@@ -15,6 +17,15 @@ os.system("cls") # Menghilangkan jejak file ketika program dijalankan
 data_pengguna = {}
 data_produk = []
 data_invoice = {}
+
+
+def load_data_from_json(file_name):
+    with open(file_name, 'r') as file:
+        return json.load(file)
+
+# Membaca data invoice dari file JSON
+data_invoice = load_data_from_json('datainvoice.json')
+
 
 # Mendapatkan direktori kerja saat ini
 current_directory = os.getcwd()
@@ -45,6 +56,9 @@ except FileNotFoundError:
 def save_data_to_json(file_nama, data):
     with open(file_nama, 'w') as file:
         json.dump(data, file, indent=4)
+
+def generate_invoice_number():
+    return str(random.randrange(1000, 10000))
 
 ##########################################################################################################################################
 
@@ -78,17 +92,26 @@ def hitung_id_berikutnya():
 def create_account():
     while True:
         try:
-            print("\n========================================\n")
-            print("               Membuat Akun")
-            print("\n========================================\n")
-            print("\n(HELP : Tekan ctrl+c untuk membatalkan pembuatan akun)\n")
+            print('''\n
+==================================================
+‖                                                ‖
+‖                  MEMBUAT AKUN                  ‖
+‖                                                ‖
+==================================================\n''')
+            print("(HELP : Tekan ctrl+c untuk membatalkan pembuatan akun)")
             # Menghitung ID terbaru dengan memanggil fungsi hitung_id_berikutnya
             id_pengguna_baru = hitung_id_berikutnya()
 
             while True:
-                print("1. User")
-                print("2. Admin")
-                role = str(input("Pilih role (user/admin): "))
+                role = str(input('''
+        _________________________________
+        |===>  Silahkan pilih role  <===|
+        |                               |
+        |            -USER              |
+        |            -ADMIN             |
+        |                               |
+        ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Tentukan opsi anda (user/admin): '''))
                 if role.lower() == "admin":
                     kode_admin = pwinput.pwinput("Masukkan angka verifikasi untuk peran admin: ")
                     if kode_admin == "12345":
@@ -99,11 +122,16 @@ def create_account():
                     break
                 else:
                     print("\nPrivilege yang diterima hanya 'admin' atau 'user'.\n")
+            print('''
+__________________________________________________\n''')
 
-            username = input("\nMasukkan nama pengguna: ")
+            username = input("Masukkan nama pengguna: ")
 
             if username in [akun_pengguna['username'] for akun_pengguna in data_pengguna.values()]:
-                print("\nUsername tersebut sudah digunakan. Pilih username lain.\n")
+                print("\nUsername tersebut sudah digunakan. Pilih username lain.")
+                print("Kembali pada menu utama...")
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                 return
 
             password = input("Masukkan kata sandi: ")
@@ -114,6 +142,8 @@ def create_account():
             save_data_to_json('datapengguna.json', data_pengguna)
             save_data_to_json('datainvoice.json', data_invoice)
             print("Akun pengguna berhasil dibuat.")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
             break  # Keluar dari loop create_account setelah akun berhasil dibuat
 
         except KeyboardInterrupt:
@@ -128,25 +158,34 @@ def create_account():
 def login():
     while True:
         try:
-            print("\n========================================\n")
-            print("                Login Akun")
-            print("\n========================================\n")
-            print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)\n")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
+            print('''\n
+==================================================
+‖                                                ‖
+‖                    LOGIN AKUN                  ‖
+‖                                                ‖
+==================================================\n''')
+            print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
             while True:
                 # Input nama pengguna
-                input_nama_pengguna = input("\nMasukkan nama pengguna: ").strip()  # Hapus whitespace
+                input_nama_pengguna = input('''
+__________________________________________________\n
+Masukkan nama pengguna : ''').strip()  # Hapus whitespace
 
                 # Periksa apakah nama pengguna ada dalam data JSON
                 for id_pengguna, akun_pengguna in data_pengguna.items():
                     if akun_pengguna['username'] == input_nama_pengguna:
                         # Jika ada, minta kata sandi
                         password = pwinput.pwinput("Masukkan kata sandi: ")
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
                         # Periksa apakah kata sandi sesuai
                         if akun_pengguna['password'] == password:
                             return akun_pengguna['username'], akun_pengguna['role']
 
-                print("\nKesalahan: Pengguna tidak ditemukan!\n")
+                print("\nKesalahan: Pengguna/Password salah!\n")
 
                 # Tanyakan apakah pengguna ingin mencoba lagi atau kembali ke menu utama
                 while True:
@@ -157,8 +196,12 @@ def login():
                         break  # Melanjutkan mencoba login lagi
                     elif pilihan == '2':
                         return None, None  # Kembali ke menu utama
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                     else:
                         print("\nPilihan tidak valid. Mohon memilih input yang benar.\n")
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
         except KeyboardInterrupt:
             print("\nLogin dibatalkan.")
@@ -186,7 +229,9 @@ def lihat_produk():
         table.add_row([product['id'], product['tiket_pesawat'], product['kelas_pesawat'], product['tujuan'], product['waktu'], product['harga']])
     print(table)
 
-
+#-------------------------------#
+# Function untuk mencari produk #
+#-------------------------------#
 
 def cari_produk_berdasarkan_keyword(keyword):
     matching_products = []
@@ -204,19 +249,32 @@ def cari_produk_berdasarkan_keyword(keyword):
 
 
 
+
 def tampilkan_hasil_pencarian(results):
     if not results:
         print("Tidak ada produk yang cocok dengan kata kunci ini.")
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
     else:
         print("Hasil Pencarian:")
         table = PrettyTable(['ID', 'Tiket Pesawat', 'Kelas Pesawat', 'Tujuan', 'Waktu', 'Harga'])
         for product in results:
             table.add_row([product['id'], product['tiket_pesawat'], product['kelas_pesawat'], product['tujuan'], product['waktu'], product['harga']])
         print(table)
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 
 def cari_dan_tampilkan_produk():
+    print('''\n
+==================================================
+‖                                                ‖
+‖                   CARI PRODUK                  ‖
+‖                                                ‖
+==================================================''')
+    print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
     keyword = input("Masukkan kata kunci untuk mencari produk (ID/Tiket Pesawat/Kelas Pesawat/Tujuan/Waktu/Harga): ")
     hasil_pencarian = cari_produk_berdasarkan_keyword(keyword)
     tampilkan_hasil_pencarian(hasil_pencarian)
@@ -241,7 +299,15 @@ def tambah_produk():
         id_terbaru = max(product['id'] for product in data_produk) + 1
     else:
         id_terbaru = 1
-
+    print('''\n
+==================================================
+‖                                                ‖
+‖                   TAMBAH PRODUK                ‖
+‖                                                ‖
+==================================================''')
+    print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+    print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
     tiket_pesawat = input("Masukkan Nama Tiket Pesawat: ")
     kelas_pesawat = input("Masukkan Kelas Pesawat: ")
     tujuan = input("Masukkan Tujuan: ")
@@ -254,6 +320,8 @@ def tambah_produk():
             break
         else:
             print("Harga harus berupa angka.")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
     product = {
         'id': id_terbaru,  # Menggunakan ID terbaru yang dihitung
@@ -266,6 +334,8 @@ def tambah_produk():
     data_produk.append(product)
     save_data_to_json('dataproduk.json', data_produk)
     print("Produk berhasil ditambahkan.")
+    print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 
@@ -291,12 +361,18 @@ def ubah_produk(id_produk):
                         product['harga'] = float(harga_input)
                         save_data_to_json('dataproduk.json', data_produk)  # Perbarui file produk
                         print("Produk berhasil diperbarui.")
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                         return
                     else:
                         print("Harga harus berupa angka.")
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
         print("Produk tidak ditemukan.")
     except ValueError:
         print("ID produk harus berupa bilangan bulat.")
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 
@@ -321,10 +397,14 @@ def hapus_produk(id_produk):
 
             save_data_to_json('dataproduk.json', data_produk)  # Simpan perubahan ID produk
             print("Produk berhasil dihapus dan ID produk diperbarui.")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
         else:
             print("Produk tidak ditemukan.")
     except ValueError:
         print("ID produk harus berupa bilangan bulat.")
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 
@@ -333,6 +413,8 @@ def hapus_produk(id_produk):
 #-----------------------------------------#
 
 def info_akun_pengguna():
+    print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
     print("\nDaftar Informasi Akun:\n")
     print("------------------")
     for id_pengguna, akun_pengguna in data_pengguna.items():
@@ -340,7 +422,8 @@ def info_akun_pengguna():
         print(f"Nama Pengguna: {akun_pengguna['username']}")
         print(f"Privilege: {akun_pengguna['role']}")
         print("------------------")
-
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 #--------------------------------------#
@@ -379,8 +462,12 @@ def hapus_data_pengguna(id_pengguna):
         save_data_to_json('datapengguna.json', data_pengguna)
         save_data_to_json('datainvoice.json', data_invoice)
         print(f"Akun dengan ID {id_pengguna} berhasil dihapus.")
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
     else:
         print(f"Akun dengan ID {id_pengguna} tidak ditemukan.")
+        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 
 
@@ -391,21 +478,31 @@ def hapus_data_pengguna(id_pengguna):
 def menu_admin():
     while True:
         try:
-            print("\n========================================\n")
-            print("               Menu Admin:")
-            print("\n========================================\n")
-            print("\n(HELP : Tekan ctrl+c untuk kembali pada menu admin)\n")
-            print("         1. Lihat Produk")
-            print("         2. Tambah Produk")
-            print("         3. Perbarui Produk")
-            print("         4. Hapus Produk")
-            print("         5. Cari Produk")
-            print("         -----------------")
-            print("         6. Lihat Akun Pengguna")
-            print("         7. Hapus Akun Pelanggan")
-            print("         8. Keluar\n")
+            print('''\n
+==================================================
+‖                                                ‖
+‖                   MENU ADMIN                   ‖
+‖                                                ‖
+==================================================''')
+            print("\n(HELP : Tekan ctrl+c untuk kembali pada menu admin)")
 
-            pilihan = input("Pilih tindakan (1/2/3/4/5/6/7/8): ")
+            pilihan = (input('''
+      _____________________________________
+      |===>    Silahkan pilih opsi    <===|
+      |                                   |
+      |         1. Lihat Produk           |
+      |         2. Tambah Produk          |   
+      |         3. Perbarui Produk        |
+      |         4. Hapus Produk           |
+      |         5. Cari Produk            |
+      |         --------------            |
+      |         6. Lihat Akun Pengguna    |
+      |         7. Hapus Akun Pengguna    |
+      |         8. Keluar                 |
+      |                                   |
+      ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Tentukan opsi anda (1/2/3/4/5/6/7/8): '''))
 
             if pilihan == '1':
                 lihat_produk()
@@ -413,10 +510,28 @@ def menu_admin():
                 tambah_produk()
             elif pilihan == '3':
                 lihat_produk()
+                print('''\n
+==================================================
+‖                                                ‖
+‖                 PERBARUI PRODUK                ‖
+‖                                                ‖
+==================================================''')
+                print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                 id_produk = (input("Masukkan ID produk yang ingin diperbarui: "))
                 ubah_produk(id_produk)
             elif pilihan == '4':
                 lihat_produk()
+                print('''\n
+==================================================
+‖                                                ‖
+‖                  HAPUS PRODUK                  ‖
+‖                                                ‖
+==================================================''')
+                print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                 id_produk = (input("Masukkan ID produk yang ingin dihapus: "))
                 hapus_produk(id_produk)
             elif pilihan == '5':
@@ -431,8 +546,12 @@ def menu_admin():
                 break  # Keluar dari loop dan kembali ke menu utama
             else:
                 print("Pilihan tidak valid.")
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
         except KeyboardInterrupt:
-            print("\nKembali pada menu admin.\n")
+            print("\nKembali pada menu admin.")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
 ##########################################################################################################################################
 
@@ -448,12 +567,37 @@ def menu_admin():
 # 1. Function untuk membeli produk #
 #----------------------------------#
 
+def kurangi_saldo(username, jumlah_pembelian):
+    # Periksa apakah username (pengguna) ada dalam data_invoice
+    if username in data_invoice:
+        # Kurangi saldo pengguna
+        data_invoice[username] -= jumlah_pembelian
+
+        # Simpan kembali data yang telah diubah
+        save_data_to_json('datainvoice.json', data_invoice)
+
+        return True
+    else:
+        return False
+
+
 def beli_produk(username):
     lihat_produk()
-    id_produk = input("Masukkan ID produk yang ingin dibeli atau ketik 'b' untuk membatalkan: ")
+    print('''\n
+==================================================
+‖                                                ‖
+‖                   BELI PRODUK                  ‖
+‖                                                ‖
+==================================================''')
+    print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+    print('''
+__________________________________________________''')
+    id_produk = input("\nMasukkan ID produk yang ingin dibeli atau ketik 'b' untuk membatalkan: ")
 
     if id_produk.lower() == 'b':
         print("Pembelian dibatalkan.")
+        print('''
+__________________________________________________''')
         return
 
     try:
@@ -461,20 +605,34 @@ def beli_produk(username):
         for product in data_produk:
             if product['id'] == id_produk:
                 harga = product['harga']
-                if username in data_invoice and data_invoice[username] >= harga:
-                    data_invoice[username] -= harga
-                    save_data_to_json('balances.json', data_invoice)
-                    print("Pembelian berhasil.")
-                    invoice = PrettyTable(['Tiket Pesawat', 'Kelas Pesawat', 'Tujuan', 'Waktu', 'Harga'])
-                    invoice.add_row([product['tiket_pesawat'], product['kelas_pesawat'], product['tujuan'], product['waktu'], harga])
-                    print("Invoice:")
-                    print(invoice)
+                if username in data_invoice:
+                    saldo_pengguna = data_invoice[username]
+                    if saldo_pengguna >= harga:
+                        if kurangi_saldo(username, harga):
+                            nomor_invoice = str(random.randint(1000, 10000))
+                            tanggal_pembelian = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            invoice = PrettyTable(['Nomor Invoice', 'Tiket Pesawat', 'Kelas Pesawat', 'Tujuan', 'Waktu', 'Harga', 'Tanggal Pembelian'])
+                            invoice.add_row([nomor_invoice, product['tiket_pesawat'], product['kelas_pesawat'], product['tujuan'], product['waktu'], harga, tanggal_pembelian])
+                            print("Pembelian berhasil.")
+                            print("\nBerikut adalah invoice Anda:\n")
+                            print(invoice)
+                        else:
+                            print("Pembelian gagal. Silakan coba lagi atau hubungi administrator.")
+                    else:
+                        print("Saldo tidak mencukupi untuk melakukan pembelian.")
                 else:
-                    print("Saldo tidak mencukupi.")
-                return
+                    print("Saldo tidak mencukupi untuk melakukan pembelian.")
+                return  # Keluar dari fungsi jika pembelian berhasil atau gagal
         print("Produk tidak ditemukan.")
+        print('''
+__________________________________________________''')
     except ValueError:
-        print("Masukkan ID produk yang ingin dibeli atau 'b' untuk membatalkan.")
+        print("\nTerjadi kesalahan, silakan input ID produk yang ingin dibeli atau 'b' untuk membatalkan.")
+        print('''
+__________________________________________________''')
+
+
+
 
 #--------------------------------#
 # 2. Function untuk top up saldo #
@@ -483,28 +641,58 @@ def beli_produk(username):
 def top_up_saldo(username):
     while True:
         try:
-            print("\n========================================\n")
-            print("                Menu Top Up")
-            print("\n========================================\n")
+            print('''\n
+            ==================================================
+            ‖                                                ‖
+            ‖                   MENU TOP UP                  ‖
+            ‖                                                ‖
+            ==================================================''')
+            print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+            print('''
+__________________________________________________''')
             while True:
                 input_jumlah_saldo = input("\nMasukkan jumlah saldo yang ingin di-top up (minimal adalah kelipatan 50.000): ")
                 if input_jumlah_saldo.isdigit():
                     jumlah = int(input_jumlah_saldo)
                     if jumlah > 0 and jumlah % 50000 == 0:  # Periksa apakah jumlahnya positif dan merupakan kelipatan 5.0000
                         if username in data_invoice:
-                            data_invoice[username] += jumlah
+                            if (data_invoice[username] + jumlah) <= 100000000:
+                                data_invoice[username] += jumlah
+                                save_data_to_json('datainvoice.json', data_invoice)
+                                print(f"Saldo berhasil ditambahkan. Saldo Anda sekarang: {data_invoice[username]}")
+                                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
+                                return
+                            else:
+                                print("Anda tidak dapat melakukan top-up saldo melebihi Rp. 100.000.000.")
+                                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                         else:
-                            data_invoice[username] = jumlah
-                        save_data_to_json('datainvoice.json', data_invoice)
-                        print(f"Saldo berhasil ditambahkan. Saldo Anda sekarang: {data_invoice[username]}")
-                        return
+                            if jumlah <= 100000000:
+                                data_invoice[username] = jumlah
+                                save_data_to_json('datainvoice.json', data_invoice)
+                                print(f"Saldo berhasil ditambahkan. Saldo Anda sekarang: {data_invoice[username]}")
+                                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
+                                return
+                            else:
+                                print("Anda tidak dapat top up saldo melebihi Rp. 100.000.000.")
+                                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                     else:
                         print("\nJumlah saldo harus lebih besar dari 0 dan merupakan kelipatan RP.50.000.\n")
+                        print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                 else:
-                    print("\nMasukkan jumlah saldo yang valid (angka saja).\n")
+                    print("\nMasukkan jumlah saldo yang valid (angka saja).")
+                    print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
         except ValueError:
             print("\nInput jumlah saldo tidak valid. Harap coba lagi.\n")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
             continue
+
 
 
 
@@ -515,18 +703,30 @@ def top_up_saldo(username):
 def menu_pelanggan(username):
     while True:
         try:
-            print("\n========================================\n")
-            print("              Menu Pelanggan:")
-            print("\n========================================\n")
-            print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)\n")
-            print("             1. Lihat Produk")
-            print("             2. Beli Produk")
-            print("             3. Top up saldo")
-            print("             4. Cari Produk")
-            print("             5. Keluar")
-
-            print(f"\nSaldo Anda saat ini: Rp.{data_invoice[username]}\n")
+            print('''\n
+==================================================
+‖                                                ‖
+‖                  MENU PELANGGAN                ‖
+‖                                                ‖
+==================================================''')
+            print("\n(HELP : Tekan ctrl+c untuk menginput ulang nama dan password)")
+            print('''
+        _________________________________
+        |===>  Silahkan pilih opsi  <===|
+        |                               |
+        |         1. Lihat Produk       |
+        |         2. Beli Produk        |   
+        |         3. Top up saldo       |
+        |         4. Cari Produk        |
+        |         5. Keluar             |
+        |                               |
+        ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
+            print(f"Saldo Anda saat ini: Rp.{data_invoice[username]}")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
             pilihan = input("Pilih tindakan (1/2/3/4/5): ")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
 
             if pilihan == '1':
                 lihat_produk()
@@ -557,20 +757,34 @@ def menu_pelanggan(username):
 if __name__ == "__main__":
     while True:
         try:
-            print("\n========================================")
-            print("\nSelamat datang di Aplikasi Tiket Pesawat\n")
-            print("========================================")
-            print("\n             1. Buat Akun")
-            print("             2. Login")
-            print("             3. Keluar")
-            pilihan = input("\nSilahkan pilih diantara opsi berikut (1/2/3): ")
-
+            print('''
+==================================================
+‖                                                ‖
+‖                SELAMAT DATANG DI               ‖
+‖                   TRAVEL SI                    ‖
+‖                                                ‖
+==================================================''')
+            pilihan = (input('''
+        _________________________________
+        |===>  Silahkan pilih opsi  <===|
+        |                               |
+        |      1. Registrasi Akun       |
+        |      2. Login Akun            |
+        |      3. Keluar                |
+        |                               |
+        ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Tentukan opsi anda (1/2/3): '''))
             if pilihan == '1':
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
                 create_account()
             elif pilihan == '2':
                 username, role = login()
                 if username:
-                    print(f"\nLogin berhasil, selamat datang {username}!\n")
+                    print(f"\nLogin berhasil, selamat datang {username}!")
+                    print('''
+########################################''')
 
                     if role == 'admin':
                         menu_admin()
@@ -583,5 +797,9 @@ if __name__ == "__main__":
                 break
             else:
                 print("\nPilihan tidak valid, silahkan input yang benar")
+                print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
         except KeyboardInterrupt:
             print("\nPilihan tidak valid, silahkan input yang benar")
+            print('''
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
