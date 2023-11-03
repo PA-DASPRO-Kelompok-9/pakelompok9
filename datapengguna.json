@@ -1,0 +1,26 @@
+{
+    "1": {
+        "id": "1",
+        "username": "khalil",
+        "password": "123",
+        "role": "admin"
+    },
+    "2": {
+        "id": "2",
+        "username": "hisyam",
+        "password": "123",
+        "role": "admin"
+    },
+    "3": {
+        "id": "3",
+        "username": "nova",
+        "password": "123",
+        "role": "user"
+    },
+    "4": {
+        "id": "4",
+        "username": "IrenePrajoyo",
+        "password": "akucantik",
+        "role": "user"
+    }
+}

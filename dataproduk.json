@@ -1,0 +1,130 @@
+[
+    {
+        "id": 1,
+        "tiket_pesawat": "Garuda Indonesia",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Samarinda - Jakarta",
+        "waktu": "08:00",
+        "harga": 2800000.0
+    },
+    {
+        "id": 2,
+        "tiket_pesawat": "Air Asia",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Jakarta - Kuala Lumpur",
+        "waktu": "12:15",
+        "harga": 2100000.0
+    },
+    {
+        "id": 3,
+        "tiket_pesawat": "Qatar Airways",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Jakarta - Doha",
+        "waktu": "14:40",
+        "harga": 4200000.0
+    },
+    {
+        "id": 4,
+        "tiket_pesawat": "Delta Airlines",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Jakarta - New York",
+        "waktu": "16:50",
+        "harga": 5600000.0
+    },
+    {
+        "id": 5,
+        "tiket_pesawat": "Japan Airlines",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Jakarta - Tokyo",
+        "waktu": "11:10",
+        "harga": 4900000.0
+    },
+    {
+        "id": 6,
+        "tiket_pesawat": "Turkish Airlines",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Jakarta - Istanbul",
+        "waktu": "13:30",
+        "harga": 3500000.0
+    },
+    {
+        "id": 7,
+        "tiket_pesawat": "Lion Air",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Bali - Surabaya",
+        "waktu": "07:30",
+        "harga": 700000.0
+    },
+    {
+        "id": 8,
+        "tiket_pesawat": "Malaysia Airlines",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Kuala Lumpur - Manila",
+        "waktu": "13:50",
+        "harga": 2520000.0
+    },
+    {
+        "id": 9,
+        "tiket_pesawat": "America Airlines ",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "New York - Los Angeles",
+        "waktu": "10:00",
+        "harga": 4200000.0
+    },
+    {
+        "id": 10,
+        "tiket_pesawat": "Aeroflot",
+        "kelas_pesawat": "Ekonomi",
+        "tujuan": "Moscow - Paris",
+        "waktu": "14:55",
+        "harga": 5600000.0
+    },
+    {
+        "id": 11,
+        "tiket_pesawat": "Singapore Airlines",
+        "kelas_pesawat": "Bisnis",
+        "tujuan": "Jakarta - Singapura",
+        "waktu": "10:30",
+        "harga": 700000.0
+    },
+    {
+        "id": 12,
+        "tiket_pesawat": "Lufthansa",
+        "kelas_pesawat": "Bisnis",
+        "tujuan": "Jakarta - Frankfurt",
+        "waktu": "19:20",
+        "harga": 11200000.0
+    },
+    {
+        "id": 13,
+        "tiket_pesawat": "British Airways",
+        "kelas_pesawat": "Bisnis",
+        "tujuan": "Jakarta - London",
+        "waktu": "21:45",
+        "harga": 12600000.0
+    },
+    {
+        "id": 14,
+        "tiket_pesawat": "Cathay Pacific",
+        "kelas_pesawat": "Bisnis",
+        "tujuan": "Hong Kong - Sydney",
+        "waktu": "09:20",
+        "harga": 9800000.0
+    },
+    {
+        "id": 15,
+        "tiket_pesawat": "KLM Royal Dutch Airlines",
+        "kelas_pesawat": "Bisnis",
+        "tujuan": "Amsterdam - New York",
+        "waktu": "17:40",
+        "harga": 10500000.0
+    },
+    {
+        "id": 16,
+        "tiket_pesawat": "Emirates",
+        "kelas_pesawat": "First Class",
+        "tujuan": "Jakarta - Dubai",
+        "waktu": "15:45",
+        "harga": 16800000.0
+    }
+]
