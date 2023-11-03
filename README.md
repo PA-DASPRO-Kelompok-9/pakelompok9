@@ -10,8 +10,8 @@ NIM : 23009116043
 
 ## Penjelasan
 ### Flow-chart
+![FLOWCHART](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/5ae8bdc2-8d3a-4ba1-b103-d22650f2ac44)
 
-![ddp pa (3)](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/32fbea47-b87b-402f-a668-521edb1adf51)
 
 
 
