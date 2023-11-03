@@ -10,29 +10,16 @@ NIM : 23009116043
 
 ## Penjelasan
 ### Flow-chart
-![FLOWCHART PA](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/bcd4275a-4721-4bec-88c4-c54083e518d6)
+
+![ddp pa (3)](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/32fbea47-b87b-402f-a668-521edb1adf51)
 
 
 
-## Penjelasan Buat Akun
-![FLOWCHART PA](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/9cfc4106-f3af-4d51-bf5f-75221d284dad)
 
 
-_Pada bagian awal Flowchart tentunya kita disambut oleh menu utama Pemesanan Tiket Pesawat dimana terdapat tiga pilihan yaitu 1.Registrasi_
-_2. Login_
-_3. Keluar_
-
-> jika kita memilih menu Registrasi Akun tentunya kita akan dihadapkan pada pilihan untuk memilih menjadi Admin atau User
-
-> Jika memilih menjadi Admin maka kita akan diperintahkan untuk input Username serta Password, lalu setelahnya program akan mengeksekusi melihat apakah username tersebut terdapat di Database. Jika terdapat username yang sama maka tentunya proses Registrasi diulang, kita harus memasukkan username lain.
-
-> Tetapi jika berhasil, maka kita dapat memasukkan kode khusus Admin dimana para Admin memiliki kode khusus yang hanya bisa diakses untuk mengidentifikasi mereka.
-
-> Jika input kode khusus berhasil maka data pengguna Admin akan disimpan kedalam database, namun jika tidak maka harus kembali ke menu memilih user atau Admin
 
 
-##Bagian Login dan Akhir
-![FLOWCHART PA](https://github.com/PA-DASPRO-Kelompok-9/pakelompok9/assets/144671469/116370a5-4a6f-4cbf-becd-c05e65d8c70f)
+
 
 
 
